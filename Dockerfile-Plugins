@@ -1,7 +1,13 @@
 FROM netboxcommunity/netbox:latest
 
 COPY ./plugin_requirements.txt /
+COPY ./netbox-gcp-plugin /opt/netbox/netbox-gcp-plugin
+
 RUN source /opt/netbox/venv/bin/activate
+RUN /opt/netbox/venv/bin/python3 /opt/netbox/netbox-gcp-plugin/setup.py develop
+
+RUN /opt/netbox/venv/bin/python3 -m pip install -e /opt/netbox/netbox-gcp-plugin
+
 RUN /opt/netbox/venv/bin/pip install  --no-warn-script-location -r /plugin_requirements.txt
 
 # These lines are only required if your plugin has its own static files.
